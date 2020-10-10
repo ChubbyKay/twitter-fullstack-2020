@@ -111,7 +111,7 @@ io.on('connection', async socket => {
   onlineUsers = onlineUsers.filter(user => user.loginID !== loginID)
   socket.broadcast.emit('onlineUsers', onlineUsers)
 
-  // 接收 chat 發出的訊息
+  // 接收 chat 發出的訊息，無法即時
   socket.on('chat', msg => {
     console.log('測試能否抓到 chat 的訊息內容:', msg)
     let receiverMessage = ""
