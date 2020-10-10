@@ -112,10 +112,10 @@ io.on('connection', async socket => {
   socket.broadcast.emit('onlineUsers', onlineUsers)
 
   // 接收 chat 發出的訊息
-  socket.on('chat', async msg => {
+  socket.on('chat', msg => {
     console.log('測試能否抓到 chat 的訊息內容:', msg)
     let receiverMessage = ""
-    await Message.create({
+    Message.create({
       UserId: loginID,
       text: msg
     }).then((messages => {
