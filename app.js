@@ -113,40 +113,24 @@ io.on('connection', async socket => {
 
   // 接收 chat 發出的訊息，無法即時
   socket.on('chat', msg => {
-    console.log('測試能否抓到 chat 的訊息內容:', msg)
+    // console.log('測試能否抓到 chat 的訊息內容:', msg)
     let receiverMessage = ""
     Message.create({
       UserId: loginID,
       text: msg
     }).then((messages => {
-      console.log('messages', messages)
-      receiverMessage = messages.map(item => ({
-        text: item.dataValues.text,
-        avatar: item.dataValues.avatar,
-        time: item.dataValues.createdAt
-      })).then(() => {
-        socket.broadcast.emit('chat', msg)
-      })
+      // console.log('messages', messages)
+      // console.log('Message text:', messages.dataValues.text)
+      receiverMessage = Object.keys(messages).forEach(item => ({
+        text: messages.dataValues.text,
+        avatar: messages.dataValues.avatar,
+        time: messages.dataValues.createdAt
+      }))
     }))
+
+    socket.broadcast.emit('chat', receiverMessage)
   })
 })
-
-// // 看不到彼此的內容，只會在發出訊息時出現 xxx 上線
-// socket.broadcast.emit('chat', msg)
-
-// 能看到彼此的內容，但是沒有署名、頭像、且字底是灰色的，文字置中，像是 xxx 上線的樣式
-// socket.broadcast.emit('message', msg)
-
-// 看不到彼此訊息，但會在 client 的 console.log 看到 Get chat
-// io.emit("chat", msg);
-
-
-
-// // 測試能否接收到 client 的 data
-// socket.on("test", test => {
-//   console.log('test:', test)
-//   // io.emit("test", 'data');
-// });
 
 require('./routes')(app, passport)
 module.exports = app

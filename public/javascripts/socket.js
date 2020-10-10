@@ -39,6 +39,7 @@ socket.on('message', (data) => {
 });
 
 document.querySelector('#button-addon2').addEventListener('click', () => {
+  event.preventDefault()
   Send();
   console.log('send!')
   // console.log('send!')
@@ -70,19 +71,11 @@ function appendData(data) {
   scrollWindow()
 }
 
-function scrollWindow() {
-  let h = document.querySelector('.chat-box')
-  h.scrollTop = h.scrollHeight;
-}
-
-
 // 傳送訊息給大家
 socket.on('chat', data => {
   console.log('Get chat')
   console.log('chat data', data)
-  // socket.emit('message', 'Hi! Robby');
 
-  // 要確定 message 有沒有接收到值，很有可能沒有
   chatmessage.innerHTML += `
         <div class="media w-50 mb-3">
           <img src="${data.avatar}" alt="user"
@@ -98,5 +91,7 @@ socket.on('chat', data => {
   scrollWindow()
 })
 
-
-// socket.emit('test', '你可以傳送訊息給 server 嗎？');
+function scrollWindow() {
+  let h = document.querySelector('.chat-box')
+  h.scrollTop = h.scrollHeight;
+}
